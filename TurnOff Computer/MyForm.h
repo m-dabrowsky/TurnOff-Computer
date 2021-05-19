@@ -1,5 +1,7 @@
 #pragma once
+#include<stdlib.h>
 #include <ctime>
+#include <math.h>
 
 namespace TurnOffComputer {
 
@@ -162,6 +164,7 @@ namespace TurnOffComputer {
 			this->lblHour->Name = L"lblHour";
 			this->lblHour->Size = System::Drawing::Size(87, 63);
 			this->lblHour->TabIndex = 5;
+			this->lblHour->Tag = L"H";
 			this->lblHour->Text = L"00";
 			// 
 			// lblMinutes
@@ -174,6 +177,7 @@ namespace TurnOffComputer {
 			this->lblMinutes->Name = L"lblMinutes";
 			this->lblMinutes->Size = System::Drawing::Size(87, 63);
 			this->lblMinutes->TabIndex = 6;
+			this->lblMinutes->Tag = L"M";
 			this->lblMinutes->Text = L"00";
 			// 
 			// points
@@ -358,43 +362,46 @@ namespace TurnOffComputer {
 
 		}
 #pragma endregion
-		
-		int minuty, godzina, m, h;
-		bool wcisniety=true;
-		bool wcisnietyUp = true;
-		bool wcisnietyDown = true;
-		int now_hour, now_minutes;
 
+		int minuty = 0, godzina = 0;
+		bool wcisniety = true;				// zmienna pomocnicza dla przycisku wyboru opcji
+		bool wcisnietyUp = true;			// zmienna pomocnicza dla przycisku zwiêkszania czasu
+		bool wcisnietyDown = true;			// zmienna pomocnicza dla przycisku zmniejszania czasu
+		int now_hour, now_minutes;			// aktualna godzina i minuty
+
+	// Widocznoœæ kontrolerk
 	private: Void visible_options(bool x) {
-		upHour->Visible = x;
-		downHour->Visible = x;
-		upMinut->Visible = x;
-		downMinut->Visible = x;
-		lblHour->Visible = x;
-		lblMinutes->Visible = x;
-		points->Visible = x;
-		specificButton->Visible =! x;
-		periodButton->Visible =! x;
+		upHour->Visible = x;				// Przycisk zwiêkszania przy godzinach
+		downHour->Visible = x;				// Przycisk zmniejszania przy godzinach
+		upMinut->Visible = x;				// Przycisk zwiêkszania przy minutach
+		downMinut->Visible = x;				// Przycisk zmniejszania przy minutach
+		lblHour->Visible = x;				// Label dla godzin
+		lblMinutes->Visible = x;			// Label dla minut
+		points->Visible = x;				// Label dla dwukropka
+		specificButton->Visible = !x;		// RadioButton dla opcji AT SPECIFIC TIME	
+		periodButton->Visible = !x;			// Przycisk zwiêkszania przy godzinie
 	}
 
-private: System::Void choose_options(System::Object^ sender, System::EventArgs^ e) {
-	
-		// TODO: pocz¹tkowo cos sie jebie
-		picOptions->Image = imageList1->Images[1];
-		visible_options(false);
-		if (wcisniety) {
-			picOptions->Image = imageList1->Images[0];
-			visible_options(true);
-		}
-		wcisniety =! wcisniety;	
-}
 	// Sposób wyœwietlania czasu przy zwiêkszaniu
 	private: Void displayUp() {
+		
+	//Label^ etykiety, int time, int num
+		//if (time > 9) {
+		//	etykiety->Text = Convert::ToString(time);
+		//	/*if (time > num) {
+		//		time = 1;
+		//		etykiety->Text = "0" + Convert::ToString(time);
+		//	}*/
+		//}
+		//else if ((time < 9) && (time > 0)){
+		//	etykiety->Text = "0" + Convert::ToString(time);
+		//}
+	
 		if (godzina > 9) {
 			lblHour->Text = Convert::ToString(godzina);
-			if (godzina > 12) {
-				godzina = 0;
-				lblHour->Text = Convert::ToString(godzina) + "0";
+			if (godzina > 24) {
+				godzina = 1;
+				lblHour->Text = "0" + Convert::ToString(godzina);
 			}
 		}
 		else {
@@ -416,17 +423,29 @@ private: System::Void choose_options(System::Object^ sender, System::EventArgs^ 
 
 	// Sposób wyœwietlania czasu przy zmniejszaniu
 	private: Void displayDown() {
+
+		/*if (time > 9) {
+			etykiety->Text = Convert::ToString(time);
+		}
+		else if ((time <= 9) && (time > 0)) {
+			etykiety->Text = "0" + Convert::ToString(time);
+		}
+		else if (time == 0) {
+				time = num;
+				etykiety->Text = Convert::ToString(time);
+			}
+		*/
+		
 		if (godzina > 9) {
 			lblHour->Text = Convert::ToString(godzina);
 		}
 		else {
 			lblHour->Text = "0" + Convert::ToString(godzina);
 			if (godzina < 0) {
-				godzina = 12;
+				godzina = 24;
 				lblHour->Text = Convert::ToString(godzina);
 			}
 		}
-
 		if (minuty > 9) {
 			lblMinutes->Text = Convert::ToString(minuty);
 		}
@@ -437,95 +456,124 @@ private: System::Void choose_options(System::Object^ sender, System::EventArgs^ 
 				lblMinutes->Text = Convert::ToString(minuty);
 			}
 		}
-	
-	}
-
-// Zwiêkszanie czasu
-private: System::Void upTime_Click(System::Object^ sender, System::EventArgs^ e) {
-	
-	PictureBox^ obrazek = (PictureBox^)sender; // umo¿liwia ->Tag = ..
-
-	// zwiêkszanie godzin jeœli strza³ka jest wciœniêta
-	if ((wcisnietyUp == true) && (obrazek->Tag == "zwiekszGodzina")) {
-		godzina++;
-		displayUp();
-	}
-	// zwiêkszanie minut jeœli strza³ka jest wciœniêta
-	else if ((wcisnietyUp == true) && (obrazek->Tag == "zwiekszMinuta")) {
-		minuty++;
-		displayUp();
-	}
-}
-
-
-
-// Zmniejszanie czasu
-private: System::Void downTime_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	PictureBox^ obrazek = (PictureBox^)sender;
-	
-	if ((wcisnietyDown == true) && (obrazek->Tag == "zmniejszGodzina")) {
-		godzina--;
-		displayDown();
-	}
-	else if ((wcisnietyDown == true) && (obrazek->Tag == "zmniejszMinuta")) {
-		minuty--;
-		displayDown();
-	}
-}
-
-
-// Akcja po wciœniêciu przycisku START
-private: System::Void startButton_Click(System::Object^ sender, System::EventArgs^ e) {
-	timer1->Start();
-	
-}
-
-
-
-private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-	// declaring argument of time()
-	time_t now = time(0);
-	tm* ltm = localtime(&now);
-
-	if (specificButton->Checked) {
-		now_hour = ltm->tm_hour;
-		now_minutes = ltm->tm_min;
-
-		upHour->Visible = false;
-		downHour->Visible = false;
-		upMinut->Visible = false;
-		downMinut->Visible = false;
-
-		lblHour->Text = Convert::ToString(now_hour);
-		lblMinutes->Text = Convert::ToString(now_minutes);
-
-
-		if (now_hour == godzina && now_minutes == minuty) MessageBox::Show("Komputer siê wy³¹cza", "TurnOff", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 
 	}
-	else if (periodButton->Checked) {
-
-		upHour->Visible = false;
-		downHour->Visible = false;
-		upMinut->Visible = false;
-		downMinut->Visible = false;
 
 
-		if (godzina > 0 && minuty==0) {
-			godzina--;
+	// Naciœniecie przycisku wyboru Opcji
+	private: System::Void choose_options(System::Object^ sender, System::EventArgs^ e) {
+
+		
+		picOptions->Image = imageList1->Images[1];		// Naciœniêcie przycisku Opcji powoduje zmianê obrazka na niebieskie kropki
+		visible_options(false);							// Nastêpuje ukrycie niepotrzebnych kontrolek
+		if (!wcisniety) {								// 
+			picOptions->Image = imageList1->Images[0];  // Zamiana obrazka na szare kropki
+			visible_options(true);						// Odkrycie kontrolek
+		}
+		wcisniety = !wcisniety;							// Negacja zmiennej pomocniczej
+	}
+
+
+	// Zwiêkszanie czasu
+	private: System::Void upTime_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		PictureBox^ obrazek = (PictureBox^)sender;		// umo¿liwia u¿ycie ->Tag = ..
+
+		// zwiêkszanie godzin jeœli strza³ka jest wciœniêta
+		if ((wcisnietyUp == true) && (obrazek->Tag == "zwiekszGodzina")) {
+			godzina++;
 			displayUp();
 		}
-		minuty--;
-		displayDown();
-		if (godzina == 0 && minuty == 0) {
-			timer1->Stop();
-			MessageBox::Show("Komputer siê wy³¹cza", "TurnOff", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+		// zwiêkszanie minut jeœli strza³ka jest wciœniêta
+		if ((wcisnietyUp == true) && (obrazek->Tag == "zwiekszMinuta")) {
+			minuty++;
+			displayUp();
 		}
+	}
+
+
+	// Zmniejszanie czasu
+	private: System::Void downTime_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		PictureBox^ obrazek = (PictureBox^)sender;
+
+		// zmniejszenie godzin jeœli strza³ka jest wciœniêta
+		if ((wcisnietyDown == true) && (obrazek->Tag == "zmniejszGodzina")) {
+			godzina--;
+			displayDown();
+		}
+		// zmniejszenie minut jeœli strza³ka jest wciœniêta
+		if ((wcisnietyDown == true) && (obrazek->Tag == "zmniejszMinuta")) {
+			minuty--;
+			displayDown();
+		}
+	}
+
+
+	// Akcja po wciœniêciu przycisku START
+	private: System::Void startButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		timer1->Start();									// W³¹czenie zegara
 
 	}
-	
 
-}
-};
+
+
+	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		// deklaracja czasu
+		time_t now = time(0);
+		tm* ltm = localtime(&now);
+
+		int d_hour, d_minutes;
+
+		if (specificButton->Checked) {						// Jeœli opcja AT SPECIFIC TIME zostanie wybrana
+			now_hour = ltm->tm_hour;						// przypisanie aktualnej godziny
+			now_minutes = ltm->tm_min;						// przypisanie aktualnych minut
+
+			upHour->Visible = false;						// Ukrycie przycisków do zwiekszania/zmniejszania czasu
+			downHour->Visible = false;
+			upMinut->Visible = false;
+			downMinut->Visible = false;
+
+			// Jeœli aktualna godzina i minuty bêd¹ równe ustawionym to wyœwietli sie okno "Komputer siê wy³¹cza"
+			if (now_hour == godzina && now_minutes == minuty)
+			{
+				timer1->Enabled = false;
+				lblHour->Text = "00";
+				lblMinutes->Text = "00";
+				MessageBox::Show("Komputer siê wy³¹cza", "TurnOff", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else {
+				d_hour = godzina - now_hour;
+				d_minutes = abs(minuty - now_minutes);
+				// TODO: Poprawiæ wyœwietlanie - stworzyæ jedn¹ metodê?
+				lblHour->Text = "0" + Convert::ToString(d_hour);	// Konwersja i wyœwietlenie aktualnego czasu
+				lblMinutes->Text = "0" +  Convert::ToString(d_minutes);
+			}
+
+		}
+		else if (periodButton->Checked) {					// Jeœli opcja AFTER PERIOD OF TIME zostanie wybrana
+			
+			upHour->Visible = false;						// Ukrycie przycisków do zwiekszania/zmniejszania czasu
+			downHour->Visible = false;
+			upMinut->Visible = false;
+			downMinut->Visible = false;
+
+
+			if (godzina > 0 && minuty == 0) {				// Jeœli godzina bêdzie wiêksza od zera i minuty dojd¹ do 0
+				godzina--;									// zmniejsz godzine
+				displayUp();
+			}
+			minuty--;										// zmniejsz minuty
+			displayDown();
+			if (godzina == 0 && minuty == 0) {				// Jeœli godzina i minuty dojd¹ do 0
+				timer1->Stop();								// Zatrzymaj zegar
+				system("C:\\Windows\\System32\\shutdown /s");
+				//MessageBox::Show("Komputer siê wy³¹cza", "TurnOff", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+
+		}
+
+
+	}
+	};
 }
