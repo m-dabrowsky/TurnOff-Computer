@@ -40,46 +40,23 @@ namespace TurnOffComputer {
 	private: System::Windows::Forms::Button^ startButton;
 	protected:
 
-
 	private: System::Windows::Forms::Label^ turnOff;
 	private: System::Windows::Forms::Label^ lblHour;
 	private: System::Windows::Forms::Label^ lblMinutes;
 	private: System::Windows::Forms::Label^ points;
-
-
-
-
-
-
-
 	private: System::Windows::Forms::PictureBox^ upHour;
 	private: System::Windows::Forms::PictureBox^ downHour;
 	private: System::Windows::Forms::PictureBox^ downMinut;
-
-
-
 	private: System::Windows::Forms::PictureBox^ upMinut;
-
 	private: System::Windows::Forms::Label^ chooseOption;
 	private: System::Windows::Forms::PictureBox^ picOptions;
-
-
 	private: System::Windows::Forms::PictureBox^ picPower;
 	private: System::Windows::Forms::ImageList^ imageList1;
 	private: System::Windows::Forms::ImageList^ imageList2;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::RadioButton^ specificButton;
 	private: System::Windows::Forms::RadioButton^ periodButton;
-
-
-
 	private: System::ComponentModel::IContainer^ components;
-
-
-
-
-
-
 
 
 	protected:
@@ -305,12 +282,12 @@ namespace TurnOffComputer {
 			this->specificButton->AutoSize = true;
 			this->specificButton->Font = (gcnew System::Drawing::Font(L"Segoe UI Black", 8.25F));
 			this->specificButton->ForeColor = System::Drawing::Color::White;
-			this->specificButton->Location = System::Drawing::Point(84, 266);
+			this->specificButton->Location = System::Drawing::Point(65, 266);
 			this->specificButton->Name = L"specificButton";
-			this->specificButton->Size = System::Drawing::Size(121, 17);
+			this->specificButton->Size = System::Drawing::Size(131, 17);
 			this->specificButton->TabIndex = 16;
 			this->specificButton->TabStop = true;
-			this->specificButton->Text = L"AT SPECIFIC TIME";
+			this->specificButton->Text = L"AT SELECTED HOUR";
 			this->specificButton->UseVisualStyleBackColor = true;
 			this->specificButton->Visible = false;
 			// 
@@ -319,12 +296,12 @@ namespace TurnOffComputer {
 			this->periodButton->AutoSize = true;
 			this->periodButton->Font = (gcnew System::Drawing::Font(L"Segoe UI Black", 8.25F));
 			this->periodButton->ForeColor = System::Drawing::Color::White;
-			this->periodButton->Location = System::Drawing::Point(84, 314);
+			this->periodButton->Location = System::Drawing::Point(64, 314);
 			this->periodButton->Name = L"periodButton";
-			this->periodButton->Size = System::Drawing::Size(152, 17);
+			this->periodButton->Size = System::Drawing::Size(192, 17);
 			this->periodButton->TabIndex = 17;
 			this->periodButton->TabStop = true;
-			this->periodButton->Text = L"AFTER PERIOD OF TIME";
+			this->periodButton->Text = L"AFTER SPECIFIED TIME PERIOD";
 			this->periodButton->UseVisualStyleBackColor = true;
 			this->periodButton->Visible = false;
 			// 
@@ -385,22 +362,10 @@ namespace TurnOffComputer {
 	// Sposób wyœwietlania czasu przy zwiêkszaniu
 	private: Void displayUp() {
 		
-	//Label^ etykiety, int time, int num
-		//if (time > 9) {
-		//	etykiety->Text = Convert::ToString(time);
-		//	/*if (time > num) {
-		//		time = 1;
-		//		etykiety->Text = "0" + Convert::ToString(time);
-		//	}*/
-		//}
-		//else if ((time < 9) && (time > 0)){
-		//	etykiety->Text = "0" + Convert::ToString(time);
-		//}
-	
 		if (godzina > 9) {
 			lblHour->Text = Convert::ToString(godzina);
-			if (godzina > 24) {
-				godzina = 1;
+			if (godzina > 23) {
+				godzina = 0;
 				lblHour->Text = "0" + Convert::ToString(godzina);
 			}
 		}
@@ -424,25 +389,14 @@ namespace TurnOffComputer {
 	// Sposób wyœwietlania czasu przy zmniejszaniu
 	private: Void displayDown() {
 
-		/*if (time > 9) {
-			etykiety->Text = Convert::ToString(time);
-		}
-		else if ((time <= 9) && (time > 0)) {
-			etykiety->Text = "0" + Convert::ToString(time);
-		}
-		else if (time == 0) {
-				time = num;
-				etykiety->Text = Convert::ToString(time);
-			}
-		*/
-		
+	
 		if (godzina > 9) {
 			lblHour->Text = Convert::ToString(godzina);
 		}
 		else {
 			lblHour->Text = "0" + Convert::ToString(godzina);
 			if (godzina < 0) {
-				godzina = 24;
+				godzina = 23;
 				lblHour->Text = Convert::ToString(godzina);
 			}
 		}
@@ -567,8 +521,8 @@ namespace TurnOffComputer {
 			displayDown();
 			if (godzina == 0 && minuty == 0) {				// Jeœli godzina i minuty dojd¹ do 0
 				timer1->Stop();								// Zatrzymaj zegar
-				system("C:\\Windows\\System32\\shutdown /s");
-				//MessageBox::Show("Komputer siê wy³¹cza", "TurnOff", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				//system("C:\\Windows\\System32\\shutdown /s");
+				MessageBox::Show("Komputer siê wy³¹cza", "TurnOff", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 			}
 
 		}
