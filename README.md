@@ -13,7 +13,7 @@ Unfortunately, at the moment, Visual Studio does not allow me to create an insta
 # How it works
 
 As you can see in the screenshots, the application has a fairly simple window. The image with **three dots** allows you to choose between <u>two options<u>:
-- turning off the computer at a specific time
+- turning off the computer at a specific hour
 - computer shutdown after a specified time
 
   <img src="https://github.com/m-dabrowsky/TurnOff-Computer/blob/master/Description/TurnOff%20App%20screen%201.png" width="285" align="right"> 
@@ -34,7 +34,6 @@ After the counter reaches zero (hours and minutes), the computer is turned off w
    ```
 
 However, for testing purposes, the following window appears:
-
 <p align="center">
-  <img src="" width="738">
+<img src="https://github.com/m-dabrowsky/TurnOff-Computer/blob/master/Description/warning.png" width="250">
 </p>
