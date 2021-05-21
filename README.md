@@ -15,15 +15,16 @@ Unfortunately, at the moment, Visual Studio does not allow me to create an insta
 As you can see in the screenshots, the application has a fairly simple window. The image with **three dots** allows you to choose between <u>two options<u>:
 - turning off the computer at a specific time
 - computer shutdown after a specified time
-<p align="center">
-  <img src="./img/example.png" width="738">
-</p>
 
-**To return to the main window**, press the button with dots again.
+  <img src="https://github.com/m-dabrowsky/TurnOff-Computer/blob/master/Description/TurnOff%20App%20screen%201.png" width="285" align="right"> 
+  <img src="https://github.com/m-dabrowsky/TurnOff-Computer/blob/master/Description/Turrn%20Off%20App%20screen%202.png" width="285">
+
+
+ **To return to the main window**, press the button with dots again.
 
 The hour and minutes are **set using the arrows** above and below them.
 <p align="center">
-  <img src="./img/example.png" width="738">
+  <img src="https://github.com/m-dabrowsky/TurnOff-Computer/blob/master/Description/2.gif" width="285">
 </p>
 
 Pressing the start button will start the countdown (as shown in the gif image).
@@ -35,5 +36,5 @@ After the counter reaches zero (hours and minutes), the computer is turned off w
 However, for testing purposes, the following window appears:
 
 <p align="center">
-  <img src="./img/example.png" width="738">
+  <img src="" width="738">
 </p>
